@@ -1,34 +1,56 @@
   
-document.addEventListener('DOMContentLoaded', () =>  {
+"use strict";
+document.addEventListener('DOMContentLoaded', load2048game) 
+  
+function load2048game() {
+
   const gridDisplay = document.querySelector('.grid')
-  const scoreDisplay = document.getElementById('score')
-  const resultDisplay = document.getElementById('result')
   let squares = []
   const width = 4
+
+  const scoreDisplay = document.getElementById('score')
   let score = 0
 
-  createBoard()
+  const resultDisplay = document.getElementById('result')
+
+  createEmptyBoard(width, gridDisplay)
+  populateATile()
+  populateATile()
+
   document.addEventListener('keyup', control)
+
   var myTimer = setInterval(addColours, 50)
   addColours()
 
-  function createBoard() {
-    for (let i=0; i < width*width; i++) {
-      square = document.createElement('div')
+  function createEmptyBoard(inputWidth, gridElement) {
+    for (let i=0; i < inputWidth*inputWidth; i++) {
+      let square = document.createElement('div') //css takes care of stayig within grid
       square.innerHTML = 0
-      gridDisplay.appendChild(square)
+      gridElement.appendChild(square)
       squares.push(square)
     }
-    generate()
-    generate()
+  }
+
+  function populateATile() {
+    checkForGameOver()
+    let randomNumber = Math.floor(Math.random() * squares.length)
+    if (squares[randomNumber].innerHTML == 0) {
+      squares[randomNumber].innerHTML = 2   
+    } else populateATile()
   }
   
-  function generate() {
-    randomNumber = Math.floor(Math.random() * squares.length)
-    if (squares[randomNumber].innerHTML == 0) {
-      squares[randomNumber].innerHTML = 2
-      checkForGameOver()
-    } else generate()
+  function checkForGameOver() {
+    let zeros = 0
+    for (let i=0; i < squares.length; i++) {
+      if (squares[i].innerHTML == 0) {
+        zeros++
+      }
+    }
+    if (zeros === 0) {
+      resultDisplay.innerHTML = 'You LOSE'
+      document.removeEventListener('keyup', control)
+      setTimeout(() => clear(), 3000)
+    }
   }
 
   function moveRight() {
@@ -153,33 +175,33 @@ document.addEventListener('DOMContentLoaded', () =>  {
       keyDown()
     }
   }
-  
+
   function keyRight() {
     moveRight()
     combineRow()
     moveRight()
-    generate()
+    populateATile()
   }
 
   function keyLeft() {
     moveLeft()
     combineRow()
     moveLeft()
-    generate()
+    populateATile()
   }
 
   function keyUp() {
     moveUp()
     combineColumn()
     moveUp()
-    generate()
+    populateATile()
   }
 
   function keyDown() {
     moveDown()
     combineColumn()
     moveDown()
-    generate()
+    populateATile()
   }
 
   function checkForWin() {
@@ -189,20 +211,6 @@ document.addEventListener('DOMContentLoaded', () =>  {
         document.removeEventListener('keyup', control)
         setTimeout(() => clear(), 3000)
       }
-    }
-  }
-
-  function checkForGameOver() {
-    let zeros = 0
-    for (let i=0; i < squares.length; i++) {
-      if (squares[i].innerHTML == 0) {
-        zeros++
-      }
-    }
-    if (zeros === 0) {
-      resultDisplay.innerHTML = 'You LOSE'
-      document.removeEventListener('keyup', control)
-      setTimeout(() => clear(), 3000)
     }
   }
 
@@ -225,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () =>  {
       else if (squares[i].innerHTML == 1024) squares[i].style.backgroundColor = '#beeaa5' 
       else if (squares[i].innerHTML == 2048) squares[i].style.backgroundColor = '#d7d4f0' 
     }
-}
+  }
 
   // enable touch interactions for mobile (swipe support) - start
   document.body.style.touchAction = 'none'
@@ -275,6 +283,6 @@ document.addEventListener('DOMContentLoaded', () =>  {
     touchEndX = null
     touchEndY = null
   }, false)
- // enable touch interactions for mobile (swipe support) - end
+  // enable touch interactions for mobile (swipe support) - end
 
-})
+}
