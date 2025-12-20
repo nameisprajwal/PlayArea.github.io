@@ -154,6 +154,57 @@ document.addEventListener('DOMContentLoaded', () =>  {
   }
   document.addEventListener('keyup', control)
 
+  // enable touch interactions for mobile (swipe support)
+  // prevent page scrolling while interacting with the game grid
+  gridDisplay.style.touchAction = 'none'
+
+  let touchStartX = null
+  let touchStartY = null
+  let touchEndX = null
+  let touchEndY = null
+
+  gridDisplay.addEventListener('touchstart', function(e) {
+    const t = e.changedTouches[0]
+    touchStartX = t.clientX
+    touchStartY = t.clientY
+    touchEndX = null
+    touchEndY = null
+  }, {passive: true})
+
+  gridDisplay.addEventListener('touchmove', function(e) {
+    // prevent the page from scrolling when swiping inside the grid
+    e.preventDefault()
+    const t = e.changedTouches[0]
+    touchEndX = t.clientX
+    touchEndY = t.clientY
+  }, {passive: false})
+
+  gridDisplay.addEventListener('touchend', function() {
+    if (touchStartX === null || touchStartY === null) return
+    // if touchmove didn't set end coords, treat as a tap (no action)
+    const endX = (touchEndX === null) ? touchStartX : touchEndX
+    const endY = (touchEndY === null) ? touchStartY : touchEndY
+
+    const dx = endX - touchStartX
+    const dy = endY - touchStartY
+    const absDx = Math.abs(dx)
+    const absDy = Math.abs(dy)
+    const threshold = 30 // minimum px for a swipe
+
+    if (absDx > absDy && absDx > threshold) {
+      if (dx > 0) keyRight()
+      else keyLeft()
+    } else if (absDy > threshold) {
+      if (dy > 0) keyDown()
+      else keyUp()
+    }
+
+    touchStartX = null
+    touchStartY = null
+    touchEndX = null
+    touchEndY = null
+  }, false)
+
   function keyRight() {
     moveRight()
     combineRow()
