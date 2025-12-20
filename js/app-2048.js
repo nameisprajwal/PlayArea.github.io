@@ -155,15 +155,15 @@ document.addEventListener('DOMContentLoaded', () =>  {
   document.addEventListener('keyup', control)
 
   // enable touch interactions for mobile (swipe support)
-  // prevent page scrolling while interacting with the game grid
-  gridDisplay.style.touchAction = 'none'
+  // prevent page scrolling while interacting with the game anywhere on screen
+  document.body.style.touchAction = 'none'
 
   let touchStartX = null
   let touchStartY = null
   let touchEndX = null
   let touchEndY = null
 
-  gridDisplay.addEventListener('touchstart', function(e) {
+  document.addEventListener('touchstart', function(e) {
     const t = e.changedTouches[0]
     touchStartX = t.clientX
     touchStartY = t.clientY
@@ -171,15 +171,15 @@ document.addEventListener('DOMContentLoaded', () =>  {
     touchEndY = null
   }, {passive: true})
 
-  gridDisplay.addEventListener('touchmove', function(e) {
-    // prevent the page from scrolling when swiping inside the grid
+  document.addEventListener('touchmove', function(e) {
+    // prevent the page from scrolling when swiping on the screen
     e.preventDefault()
     const t = e.changedTouches[0]
     touchEndX = t.clientX
     touchEndY = t.clientY
   }, {passive: false})
 
-  gridDisplay.addEventListener('touchend', function() {
+  document.addEventListener('touchend', function() {
     if (touchStartX === null || touchStartY === null) return
     // if touchmove didn't set end coords, treat as a tap (no action)
     const endX = (touchEndX === null) ? touchStartX : touchEndX
