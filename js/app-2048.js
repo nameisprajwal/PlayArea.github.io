@@ -7,7 +7,11 @@ document.addEventListener('DOMContentLoaded', () =>  {
   const width = 4
   let score = 0
 
-  //create the playing board
+  createBoard()
+  document.addEventListener('keyup', control)
+  var myTimer = setInterval(addColours, 50)
+  addColours()
+
   function createBoard() {
     for (let i=0; i < width*width; i++) {
       square = document.createElement('div')
@@ -18,9 +22,7 @@ document.addEventListener('DOMContentLoaded', () =>  {
     generate()
     generate()
   }
-  createBoard()
-
-  //generate a new number
+  
   function generate() {
     randomNumber = Math.floor(Math.random() * squares.length)
     if (squares[randomNumber].innerHTML == 0) {
@@ -140,7 +142,6 @@ document.addEventListener('DOMContentLoaded', () =>  {
     checkForWin()
   }
 
-  //assign functions to keyCodes
   function control(e) {
     if(e.keyCode === 37) {
       keyLeft()
@@ -152,12 +153,82 @@ document.addEventListener('DOMContentLoaded', () =>  {
       keyDown()
     }
   }
-  document.addEventListener('keyup', control)
+  
+  function keyRight() {
+    moveRight()
+    combineRow()
+    moveRight()
+    generate()
+  }
 
-  // enable touch interactions for mobile (swipe support)
-  // prevent page scrolling while interacting with the game anywhere on screen
+  function keyLeft() {
+    moveLeft()
+    combineRow()
+    moveLeft()
+    generate()
+  }
+
+  function keyUp() {
+    moveUp()
+    combineColumn()
+    moveUp()
+    generate()
+  }
+
+  function keyDown() {
+    moveDown()
+    combineColumn()
+    moveDown()
+    generate()
+  }
+
+  function checkForWin() {
+    for (let i=0; i < squares.length; i++) {
+      if (squares[i].innerHTML == 2048) {
+        resultDisplay.innerHTML = 'You WIN'
+        document.removeEventListener('keyup', control)
+        setTimeout(() => clear(), 3000)
+      }
+    }
+  }
+
+  function checkForGameOver() {
+    let zeros = 0
+    for (let i=0; i < squares.length; i++) {
+      if (squares[i].innerHTML == 0) {
+        zeros++
+      }
+    }
+    if (zeros === 0) {
+      resultDisplay.innerHTML = 'You LOSE'
+      document.removeEventListener('keyup', control)
+      setTimeout(() => clear(), 3000)
+    }
+  }
+
+  function clear() {
+    clearInterval(myTimer)
+  }
+
+  function addColours() {
+    for (let i=0; i < squares.length; i++) {
+      if (squares[i].innerHTML == 0) squares[i].style.backgroundColor = '#8a7f73'
+      else if (squares[i].innerHTML == 2) squares[i].style.backgroundColor = '#eee4da'
+      else if (squares[i].innerHTML  == 4) squares[i].style.backgroundColor = '#ede0c8' 
+      else if (squares[i].innerHTML  == 8) squares[i].style.backgroundColor = '#f2b179' 
+      else if (squares[i].innerHTML  == 16) squares[i].style.backgroundColor = '#ffcea4' 
+      else if (squares[i].innerHTML  == 32) squares[i].style.backgroundColor = '#e8c064' 
+      else if (squares[i].innerHTML == 64) squares[i].style.backgroundColor = '#ffab6e' 
+      else if (squares[i].innerHTML == 128) squares[i].style.backgroundColor = '#fd9982' 
+      else if (squares[i].innerHTML == 256) squares[i].style.backgroundColor = '#ead79c' 
+      else if (squares[i].innerHTML == 512) squares[i].style.backgroundColor = '#76daff' 
+      else if (squares[i].innerHTML == 1024) squares[i].style.backgroundColor = '#beeaa5' 
+      else if (squares[i].innerHTML == 2048) squares[i].style.backgroundColor = '#d7d4f0' 
+    }
+}
+
+  // enable touch interactions for mobile (swipe support) - start
   document.body.style.touchAction = 'none'
-
   let touchStartX = null
   let touchStartY = null
   let touchEndX = null
@@ -204,86 +275,6 @@ document.addEventListener('DOMContentLoaded', () =>  {
     touchEndX = null
     touchEndY = null
   }, false)
-
-  function keyRight() {
-    moveRight()
-    combineRow()
-    moveRight()
-    generate()
-  }
-
-  function keyLeft() {
-    moveLeft()
-    combineRow()
-    moveLeft()
-    generate()
-  }
-
-  function keyUp() {
-    moveUp()
-    combineColumn()
-    moveUp()
-    generate()
-  }
-
-  function keyDown() {
-    moveDown()
-    combineColumn()
-    moveDown()
-    generate()
-  }
-
-  //check for the number 2048 in the squares to win
-  function checkForWin() {
-    for (let i=0; i < squares.length; i++) {
-      if (squares[i].innerHTML == 2048) {
-        resultDisplay.innerHTML = 'You WIN'
-        document.removeEventListener('keyup', control)
-        setTimeout(() => clear(), 3000)
-      }
-    }
-  }
-
-  //check if there are no zeros on the board to lose
-  function checkForGameOver() {
-    let zeros = 0
-    for (let i=0; i < squares.length; i++) {
-      if (squares[i].innerHTML == 0) {
-        zeros++
-      }
-    }
-    if (zeros === 0) {
-      resultDisplay.innerHTML = 'You LOSE'
-      document.removeEventListener('keyup', control)
-      setTimeout(() => clear(), 3000)
-    }
-  }
-
-  //clear timer
-  function clear() {
-    clearInterval(myTimer)
-  }
-
-
-  //add colours
-  function addColours() {
-    for (let i=0; i < squares.length; i++) {
-      if (squares[i].innerHTML == 0) squares[i].style.backgroundColor = '#afa192'
-      else if (squares[i].innerHTML == 2) squares[i].style.backgroundColor = '#eee4da'
-      else if (squares[i].innerHTML  == 4) squares[i].style.backgroundColor = '#ede0c8' 
-      else if (squares[i].innerHTML  == 8) squares[i].style.backgroundColor = '#f2b179' 
-      else if (squares[i].innerHTML  == 16) squares[i].style.backgroundColor = '#ffcea4' 
-      else if (squares[i].innerHTML  == 32) squares[i].style.backgroundColor = '#e8c064' 
-      else if (squares[i].innerHTML == 64) squares[i].style.backgroundColor = '#ffab6e' 
-      else if (squares[i].innerHTML == 128) squares[i].style.backgroundColor = '#fd9982' 
-      else if (squares[i].innerHTML == 256) squares[i].style.backgroundColor = '#ead79c' 
-      else if (squares[i].innerHTML == 512) squares[i].style.backgroundColor = '#76daff' 
-      else if (squares[i].innerHTML == 1024) squares[i].style.backgroundColor = '#beeaa5' 
-      else if (squares[i].innerHTML == 2048) squares[i].style.backgroundColor = '#d7d4f0' 
-    }
-}
-addColours()
-
-var myTimer = setInterval(addColours, 50)
+ // enable touch interactions for mobile (swipe support) - end
 
 })
