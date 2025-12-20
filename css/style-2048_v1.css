@@ -1,14 +1,15 @@
+  
 body {
-  background-color: #fbfaf7; /* softer paper white */
+  background-color: #faf8ef;
   display: flex;
   justify-content: center;
-  font-family: "Clear Sans", "Helvetica Neue";
+  font-family: "Clear Sans", "Helvetica Neue"
 }
 
 h1 {
   font-size: 80px;
   line-height: 0.7;
-  color: #7a7066; /* slightly softer brown */
+  color: #776E65;
   margin: 0px;
 }
 
@@ -23,13 +24,13 @@ h1 {
   margin-bottom: 20px;
 }
 
-.grid {
+.grid{
   display: flex;
   flex-wrap: wrap;
   width: 456px;
   height: 456px;
-  background-color: #c2b6a8; /* lighter grid base */
-  border: 7px solid #c2b6a8;
+  background-color: #BBADA0;
+  border: 7px solid #BBADA0;
   border-radius: 6px;
   margin-top: 20px;
 }
@@ -39,8 +40,8 @@ h1 {
   height: 100px;
   margin: 7px;
   border-radius: 3px;
-  background-color: #eee6dd; /* softer empty tile */
-  color: #8a7f73; /* less contrast, easier eyes */
+  background-color: #EEE4DA;
+  color: #afa192;
   font-weight: bold;
   text-align: center;
   font-size: 60px;
@@ -52,8 +53,8 @@ h1 {
   width: 70px;
   height: 60px;
   border-radius: 3px;
-  background-color: #9b8773; /* warmer score box */
-  color: #ffffff;
+  background-color: #8f7a66;
+  color: #FFFFFF;
 }
 
 #score {
@@ -62,5 +63,4 @@ h1 {
 
 .score-title {
   font-size: 16px;
-  color: #f5f3f0;
 }

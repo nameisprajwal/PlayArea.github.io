@@ -1,0 +1,107 @@
+/* ---------- Base ---------- */
+body {
+  background-color: #faf8ef;
+  display: flex;
+  justify-content: center;
+  font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+  color: #776e65;
+}
+
+/* ---------- Heading ---------- */
+h1 {
+  font-size: 78px;
+  font-weight: 700;
+  line-height: 0.9;
+  margin: 0;
+  color: #776e65;
+}
+
+/* ---------- Container ---------- */
+.container {
+  width: 470px;
+  margin-top: 36px;
+}
+
+/* ---------- Info Row ---------- */
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+/* ---------- Score ---------- */
+.score-container {
+  width: 92px;
+  height: 60px;
+  border-radius: 6px;
+  background-color: #bbada0;
+  color: #ffffff;
+  text-align: center;
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.08);
+}
+
+.score-title {
+  font-size: 14px;
+  margin-top: 6px;
+  opacity: 0.85;
+}
+
+#score {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* ---------- Grid ---------- */
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  width: 456px;
+  height: 456px;
+  background-color: #bbada0;
+  border-radius: 8px;
+  padding: 6px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* ---------- Cells ---------- */
+.grid div {
+  width: 100px;
+  height: 100px;
+  margin: 6px;
+  border-radius: 6px;
+  background-color: #cdc1b4;
+  color: #776e65;
+  font-size: 56px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 100px;
+  transition: transform 0.08s ease, background-color 0.12s ease;
+}
+
+/* ---------- Tile Presence ---------- */
+.grid div:not(:empty) {
+  background-color: #eee4da;
+}
+
+/* ---------- Subtle Interaction ---------- */
+.grid div:not(:empty):active {
+  transform: scale(0.97);
+}
+
+/* ---------- Optional: Softer Look on High Values ---------- */
+.grid div[value="2"]   { background-color: #eee4da; }
+.grid div[value="4"]   { background-color: #ede0c8; }
+.grid div[value="8"]   { background-color: #f2b179; color: #f9f6f2; }
+.grid div[value="16"]  { background-color: #f59563; color: #f9f6f2; }
+.grid div[value="32"]  { background-color: #f67c5f; color: #f9f6f2; }
+.grid div[value="64"]  { background-color: #f65e3b; color: #f9f6f2; }
+.grid div[value="128"] { background-color: #edcf72; color: #f9f6f2; }
+.grid div[value="256"] { background-color: #edcc61; color: #f9f6f2; }
+.grid div[value="512"] { background-color: #edc850; color: #f9f6f2; }
+.grid div[value="1024"],
+.grid div[value="2048"] {
+  background-color: #edc53f;
+  color: #f9f6f2;
+}
