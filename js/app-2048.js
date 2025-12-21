@@ -32,7 +32,7 @@ function load2048game() {
     } else populateATile()
   }
   
-   function checkForGameOver() { //TODO: merge the for loops, optimise with 'return' statement
+  function checkForGameOver() {
     let zeros = 0
     let horizontalCheck = 0
     let verticalCheck = 0   
@@ -40,12 +40,14 @@ function load2048game() {
     let check = 0
     for (let i=0; i < squares.length; i++) {
       if (squares[i].innerHTML == 0) {
+        return true
         zeros++
         check++
       }
 
       if ( (i+1) % 4 !== 0  &&  i + 1 < squares.length ) { //change 4 to width to make it dynamic
         if (squares[i].innerHTML === squares[i +1].innerHTML) {
+          return true
           horizontalCheck++
           check++
         }
@@ -53,6 +55,7 @@ function load2048game() {
 
       if (i < squares.length - 4) { //change 4 to width to make it dynamic
         if (squares[i].innerHTML === squares[i +4].innerHTML) {
+          return true
           verticalCheck++
           check++
         }
@@ -60,22 +63,7 @@ function load2048game() {
 
     }
 
-
     if (check === 0) { //change check to zeros in "make it interesting" version
-      resultDisplay.innerHTML = 'You LOSE'
-      document.removeEventListener('keyup', control)
-      setTimeout(() => clear(), 3000)
-    }
-  }
-
-  function checkForGameOverOld() {  
-    let zeros = 0
-    for (let i=0; i < squares.length; i++) {
-      if (squares[i].innerHTML == 0) {
-        zeros++
-      }
-    }
-    if (zeros === 0) {
       resultDisplay.innerHTML = 'You LOSE'
       document.removeEventListener('keyup', control)
       setTimeout(() => clear(), 3000)
