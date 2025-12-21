@@ -7,7 +7,11 @@ document.addEventListener('DOMContentLoaded', () =>  {
   const width = 4
   let score = 0
 
-  //create the playing board
+  createBoard()
+  document.addEventListener('keyup', control)
+  var myTimer = setInterval(addColours, 50)
+  addColours()
+
   function createBoard() {
     for (let i=0; i < width*width; i++) {
       square = document.createElement('div')
@@ -18,9 +22,7 @@ document.addEventListener('DOMContentLoaded', () =>  {
     generate()
     generate()
   }
-  createBoard()
-
-  //generate a new number
+  
   function generate() {
     randomNumber = Math.floor(Math.random() * squares.length)
     if (squares[randomNumber].innerHTML == 0) {
@@ -140,7 +142,6 @@ document.addEventListener('DOMContentLoaded', () =>  {
     checkForWin()
   }
 
-  //assign functions to keyCodes
   function control(e) {
     if(e.keyCode === 37) {
       keyLeft()
@@ -152,8 +153,7 @@ document.addEventListener('DOMContentLoaded', () =>  {
       keyDown()
     }
   }
-  document.addEventListener('keyup', control)
-
+  
   function keyRight() {
     moveRight()
     combineRow()
@@ -182,7 +182,6 @@ document.addEventListener('DOMContentLoaded', () =>  {
     generate()
   }
 
-  //check for the number 2048 in the squares to win
   function checkForWin() {
     for (let i=0; i < squares.length; i++) {
       if (squares[i].innerHTML == 2048) {
@@ -193,7 +192,6 @@ document.addEventListener('DOMContentLoaded', () =>  {
     }
   }
 
-  //check if there are no zeros on the board to lose
   function checkForGameOver() {
     let zeros = 0
     for (let i=0; i < squares.length; i++) {
@@ -208,16 +206,13 @@ document.addEventListener('DOMContentLoaded', () =>  {
     }
   }
 
-  //clear timer
   function clear() {
     clearInterval(myTimer)
   }
 
-
-  //add colours
   function addColours() {
     for (let i=0; i < squares.length; i++) {
-      if (squares[i].innerHTML == 0) squares[i].style.backgroundColor = '#afa192'
+      if (squares[i].innerHTML == 0) squares[i].style.backgroundColor = '#8a7f73'
       else if (squares[i].innerHTML == 2) squares[i].style.backgroundColor = '#eee4da'
       else if (squares[i].innerHTML  == 4) squares[i].style.backgroundColor = '#ede0c8' 
       else if (squares[i].innerHTML  == 8) squares[i].style.backgroundColor = '#f2b179' 
@@ -231,8 +226,55 @@ document.addEventListener('DOMContentLoaded', () =>  {
       else if (squares[i].innerHTML == 2048) squares[i].style.backgroundColor = '#d7d4f0' 
     }
 }
-addColours()
 
-var myTimer = setInterval(addColours, 50)
+  // enable touch interactions for mobile (swipe support) - start
+  document.body.style.touchAction = 'none'
+  let touchStartX = null
+  let touchStartY = null
+  let touchEndX = null
+  let touchEndY = null
+
+  document.addEventListener('touchstart', function(e) {
+    const t = e.changedTouches[0]
+    touchStartX = t.clientX
+    touchStartY = t.clientY
+    touchEndX = null
+    touchEndY = null
+  }, {passive: true})
+
+  document.addEventListener('touchmove', function(e) {
+    // prevent the page from scrolling when swiping on the screen
+    e.preventDefault()
+    const t = e.changedTouches[0]
+    touchEndX = t.clientX
+    touchEndY = t.clientY
+  }, {passive: false})
+
+  document.addEventListener('touchend', function() {
+    if (touchStartX === null || touchStartY === null) return
+    // if touchmove didn't set end coords, treat as a tap (no action)
+    const endX = (touchEndX === null) ? touchStartX : touchEndX
+    const endY = (touchEndY === null) ? touchStartY : touchEndY
+
+    const dx = endX - touchStartX
+    const dy = endY - touchStartY
+    const absDx = Math.abs(dx)
+    const absDy = Math.abs(dy)
+    const threshold = 30 // minimum px for a swipe
+
+    if (absDx > absDy && absDx > threshold) {
+      if (dx > 0) keyRight()
+      else keyLeft()
+    } else if (absDy > threshold) {
+      if (dy > 0) keyDown()
+      else keyUp()
+    }
+
+    touchStartX = null
+    touchStartY = null
+    touchEndX = null
+    touchEndY = null
+  }, false)
+ // enable touch interactions for mobile (swipe support) - end
 
 })
