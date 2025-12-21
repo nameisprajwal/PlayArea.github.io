@@ -1,0 +1,19 @@
+.app{ font-family: system-ui, Arial; padding: 24px; display:flex; flex-direction:column; align-items:center }
+.header{ display:flex; align-items:center; gap:16px }
+.grid{ display:grid; grid-template-columns: repeat(4, 1fr); gap:7px; width: min(92vw, 456px); margin-top:16px }
+.grid .tile{ aspect-ratio:1/1; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:2.5rem; border-radius:6px }
+.tile.empty{ background:#eee6dd; color:#8a7f73 }
+.tile.t2{ background:#eee4da }
+.tile.t4{ background:#ede0c8 }
+.tile.t8{ background:#f2b179 }
+.tile.t16{ background:#ffcea4 }
+.tile.t32{ background:#e8c064 }
+.tile.t64{ background:#ffab6e }
+.tile.t128{ background:#fd9982 }
+.tile.t256{ background:#ead79c }
+.tile.t512{ background:#76daff }
+.tile.t1024{ background:#beeaa5 }
+.tile.t2048{ background:#d7d4f0 }
+.scoreRow{ display:flex; gap:12px; align-items:center }
+.scoreBox{ background:#333; color:white; padding:8px 12px; border-radius:6px }
+.result{ margin-top:12px; font-weight:700 }
