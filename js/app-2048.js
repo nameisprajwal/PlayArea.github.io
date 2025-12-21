@@ -20,7 +20,9 @@ function load2048game() {
   const controlHandler = e => control(e, squares,width, resultDisplay, scoreDisplay,score)
   document.addEventListener('keyup', controlHandler)
 
-  var myTimer = setInterval(addColours, 50)
+
+
+  var myTimer = setInterval(addColours, 50)  //todo improve this logic
   addColours()
 
   function clear() {
@@ -120,7 +122,7 @@ function playOneMove(squaresArray, resultDisplay){
         if (squaresArray[randomNumber].innerHTML == 0) {
           squaresArray[randomNumber].innerHTML = 2   
         } else populateATile(squaresArray)
-      } 
+    } 
 
     function checkForGameOver(squaresArray) {
       let zeros = 0
