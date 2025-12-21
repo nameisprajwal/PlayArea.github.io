@@ -13,7 +13,7 @@ function load2048game() {
 
   const resultDisplay = document.getElementById('result')
 
-  createEmptyBoard(width, gridDisplay)
+  createEmptyBoard(width, gridDisplay, squares)
   populateATile()
   populateATile()
 
@@ -22,14 +22,7 @@ function load2048game() {
   var myTimer = setInterval(addColours, 50)
   addColours()
 
-  function createEmptyBoard(inputWidth, gridElement) {
-    for (let i=0; i < inputWidth*inputWidth; i++) {
-      let square = document.createElement('div') //css takes care of stayig within grid
-      square.innerHTML = 0
-      gridElement.appendChild(square)
-      squares.push(square)
-    }
-  }
+  
 
   function populateATile() {
     checkForGameOver()
@@ -39,7 +32,43 @@ function load2048game() {
     } else populateATile()
   }
   
-  function checkForGameOver() {
+   function checkForGameOver() { //TODO: merge the for loops, optimise with 'return' statement
+    let zeros = 0
+    let horizontalCheck = 0
+    let verticalCheck = 0   
+    
+    let check = 0
+    for (let i=0; i < squares.length; i++) {
+      if (squares[i].innerHTML == 0) {
+        zeros++
+        check++
+      }
+
+      if ( (i+1) % 4 !== 0  &&  i + 1 < squares.length ) { //change 4 to width to make it dynamic
+        if (squares[i].innerHTML === squares[i +1].innerHTML) {
+          horizontalCheck++
+          check++
+        }
+      }
+
+      if (i < squares.length - 4) { //change 4 to width to make it dynamic
+        if (squares[i].innerHTML === squares[i +4].innerHTML) {
+          verticalCheck++
+          check++
+        }
+      }
+
+    }
+
+
+    if (check === 0) { //change check to zeros in "make it interesting" version
+      resultDisplay.innerHTML = 'You LOSE'
+      document.removeEventListener('keyup', control)
+      setTimeout(() => clear(), 3000)
+    }
+  }
+
+  function checkForGameOverOld() {  
     let zeros = 0
     for (let i=0; i < squares.length; i++) {
       if (squares[i].innerHTML == 0) {
@@ -285,4 +314,13 @@ function load2048game() {
   }, false)
   // enable touch interactions for mobile (swipe support) - end
 
+}
+
+function createEmptyBoard(inputWidth, gridElement, squaresArray) {
+    for (let i=0; i < inputWidth*inputWidth; i++) {
+      let square = document.createElement('div') //css takes care of stayig within grid
+      square.innerHTML = 0
+      gridElement.appendChild(square)
+      squaresArray.push(square)
+    }
 }
