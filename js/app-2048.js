@@ -9,7 +9,8 @@ function load2048game() {
   const width = 4
 
   const scoreDisplay = document.getElementById('score')
-  let score = 0
+  const state = { score: 0 }
+  scoreDisplay.innerHTML = state.score
 
   const resultDisplay = document.getElementById('result')
 
@@ -17,7 +18,7 @@ function load2048game() {
   populateATile(squares)
   populateATile(squares)
 
-  const controlHandler = e => control(e, squares,width, resultDisplay, scoreDisplay,score)
+  const controlHandler = e => control(e, squares, width, resultDisplay, scoreDisplay, state)
   document.addEventListener('keyup', controlHandler)
 
 
@@ -164,7 +165,7 @@ function playOneMove(squaresArray, resultDisplay){
       setTimeout(() => clear(), 3000)
     }
 
-function control(e, squaresArray,width, resultDisplay, scoreDisplay,score) {
+function control(e, squaresArray, width, resultDisplay, scoreDisplay, state) {
     if(e.keyCode === 37) {
       keyLeft()
     } else if (e.keyCode === 38) {
@@ -177,28 +178,28 @@ function control(e, squaresArray,width, resultDisplay, scoreDisplay,score) {
 
       function keyRight() {
         moveRight(squaresArray)
-        combineRow(squaresArray, scoreDisplay,score,resultDisplay)
+        combineRow(squaresArray, scoreDisplay, state, resultDisplay)
         moveRight(squaresArray)
         playOneMove(squaresArray, resultDisplay)
       }
 
       function keyLeft() {
         moveLeft(squaresArray)
-        combineRow(squaresArray, scoreDisplay,score,resultDisplay)
+        combineRow(squaresArray, scoreDisplay, state, resultDisplay)
         moveLeft(squaresArray)
         playOneMove(squaresArray, resultDisplay)
       }
 
       function keyUp() {
         moveUp(squaresArray,width)
-        combineColumn(squaresArray,width, scoreDisplay,score,resultDisplay)
+        combineColumn(squaresArray,width, scoreDisplay, state, resultDisplay)
         moveUp(squaresArray,width)
         playOneMove(squaresArray, resultDisplay)
       }
 
       function keyDown() {
         moveDown(squaresArray,width)
-        combineColumn(squaresArray,width, scoreDisplay,score,resultDisplay)
+        combineColumn(squaresArray,width, scoreDisplay, state, resultDisplay)
         moveDown(squaresArray,width)
         playOneMove(squaresArray, resultDisplay)
       } 
@@ -289,27 +290,27 @@ function control(e, squaresArray,width, resultDisplay, scoreDisplay,score) {
     }
   }
 
-   function combineRow(squares, scoreDisplay,score,resultDisplay) {
+   function combineRow(squares, scoreDisplay, state, resultDisplay) {
     for (let i =0; i < 15; i++) {
       if (squares[i].innerHTML === squares[i +1].innerHTML) {
         let combinedTotal = parseInt(squares[i].innerHTML) + parseInt(squares[i +1].innerHTML)
         squares[i].innerHTML = combinedTotal
         squares[i +1].innerHTML = 0
-        score += combinedTotal
-        scoreDisplay.innerHTML = score
+        state.score += combinedTotal
+        scoreDisplay.innerHTML = state.score
       }
     }
     checkForWin(squares, resultDisplay, scoreDisplay)
   }
 
-   function combineColumn(squares,width, scoreDisplay, score,resultDisplay) {
+   function combineColumn(squares,width, scoreDisplay, state,resultDisplay) {
     for (let i =0; i < 12; i++) {
       if (squares[i].innerHTML === squares[i +width].innerHTML) {
         let combinedTotal = parseInt(squares[i].innerHTML) + parseInt(squares[i +width].innerHTML)
         squares[i].innerHTML = combinedTotal
         squares[i +width].innerHTML = 0
-        score += combinedTotal
-        scoreDisplay.innerHTML = score
+        state.score += combinedTotal
+        scoreDisplay.innerHTML = state.score
       }
     }
     checkForWin(squares, resultDisplay, scoreDisplay)
